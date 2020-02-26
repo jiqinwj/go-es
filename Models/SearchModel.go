@@ -12,6 +12,8 @@ type SearchModel struct {
 		Score bool `json:"score" `
 		PriceOrder int `json:"price_order" binding:"oneof=0 1 2"`
 	} `json:"OrderSet" binding:"required,dive"`
+	Current int `json:"current" binding:"gte=1"`
+	Size int `json:"size" binding:"oneof=10 20 50"`
 
 }
 

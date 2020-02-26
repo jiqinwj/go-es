@@ -1,6 +1,6 @@
 <template>
     <div>
-      <div>
+      <div style="width: 95%;margin: 0 auto">
           <dl class="sdt">
               <dt>
                   出版社
@@ -48,7 +48,19 @@
 
               </dd>
           </dl>
+          <div style="width: 95%;margin:10px auto">
+              <el-pagination
+                      @size-change="(size)=>{searchModel.size=size;this.search()}"
+                      @current-change="currentChange"
+                      :current-page="searchModel.current"
+                      :page-sizes="[10, 20, 50]"
+                      :page-size="searchModel.size"
+                      layout="total, sizes, prev, pager, next, jumper"
+                      :total="searchModel.total">
+              </el-pagination>
+          </div>
       </div>
+
         <div style="width: 95%;margin:30px auto">
             <el-table
                     :data="bookList"
@@ -57,29 +69,36 @@
                 <el-table-column
                         prop="BookID"
                         label="ID"
-                        width="180">
+                        width="50">
                 </el-table-column>
                 <el-table-column
-                        prop="BookName"
                         label="商品名称"
-                        width="180">
+                        width="220">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.BookName | words(20)}}</span>
+                    </template>
                 </el-table-column>
                 <el-table-column
-                        prop="BookIntr"
                         label="商品简介"
-                        width="280">
+                        width="520">
+                    <template slot-scope="scope">
+                        <span>{{scope.row.BookIntr | words(40)}}</span>
+                    </template>
                 </el-table-column>
                 <el-table-column
                         prop="BookPrice1"
-                        label="价格">
+                        label="价格"
+                        width="80">
                 </el-table-column>
                 <el-table-column
                         prop="BookPress"
-                        label="出版社">
+                        label="出版社"
+                        width="180">
                 </el-table-column>
                 <el-table-column
                         prop="BookAuthor"
-                        label="作者">
+                        label="作者"
+                        width="80">
                 </el-table-column>
             </el-table>
         </div>
@@ -101,9 +120,12 @@
                    OrderSet:{
                        score:true, // 默认按socre
                        price_order:0,// 0就是不限价格 1代表从低到高，2代表从高到低
-                   }
+                   },
+                   current:1,//当前页
+                   size:10,//每页显示多少条
+                   total:0 //一共多少条
                },
-               PriceSelect:["价格不限","价格从低到高","价格从高到低"]
+               PriceSelect:["价格不限","价格从低到高","价格从高到低"],
            }
        },
        created(){
@@ -115,11 +137,17 @@
                const { result } = response.data
                this.pressList = result
            },
+           currentChange(page){ //当前页发生变化
+                this.searchModel.current = page
+                this.search()
+           },
            async search(){
-               console.log(this.searchModel)
+              // console.log(this.searchModel)
                const response = await axios.post("/books/search",this.searchModel)
-               const { result } = response.data
+               const { result,metas } = response.data
                this.bookList = result
+               this.searchModel.total = metas.total
+
            },
            setPress(press){
                if (this.searchModel.book_press === press ){
@@ -128,7 +156,20 @@
                    this.searchModel.book_press = press
                }
 
+           },
+
+       },
+       filters:{
+           words(v,num){
+               if (!v) return "";
+               if (v.length > num) {
+                   return v.slice(0, num) + "...";
+               }
+               return v;
            }
+
+
+
        }
    }
 </script>
@@ -144,4 +185,5 @@
   .sdt dd .numtext{width:100px}
   .sdt dd span{margin: 0 auto}
     a{cursor:pointer}
+    .el-pagination{margin:0 auto;float: left}
 </style>
