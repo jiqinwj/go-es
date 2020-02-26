@@ -32,8 +32,12 @@ func LoadBookByPress(ctx *gin.Context)  {
 	for _,p:=range list {
 		pressList=append(pressList,p)
 	}
+
 	termQuery:=elastic.NewTermsQuery("BookPress",pressList...)
-	rsp,err:=AppInit.GetEsClient().Search().Query(termQuery).
+	machQuery:=elastic.NewMatchQuery("BookName","图灵")
+	b:=elastic.NewBoolQuery().
+		Must(termQuery,machQuery)
+	rsp,err:=AppInit.GetEsClient().Search().Query(b).
 		Index("books").Do(ctx)
 	if err!=nil{
 		ctx.JSON(500,gin.H{"error":err})
