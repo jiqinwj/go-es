@@ -14,7 +14,6 @@ type SearchModel struct {
 	} `json:"OrderSet" binding:"required,dive"`
 	Current int `json:"current" binding:"gte=1"`
 	Size int `json:"size" binding:"oneof=10 20 50"`
-
 }
 
 func NewSearchModel() *SearchModel  {

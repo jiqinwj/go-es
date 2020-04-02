@@ -60,7 +60,6 @@ func SearchBook(ctx *gin.Context)  {
 		Index("books").Do(ctx)
 	log.Println(err)
 	if err!=nil{
-
 		ctx.JSON(500,gin.H{"error":err})
 	}else{
 		ctx.JSON(200,gin.H{"result":MapToBooks(rsp),"metas":gin.H{"total":rsp.TotalHits()}})

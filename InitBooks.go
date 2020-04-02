@@ -11,7 +11,7 @@ import (
 	"sync"
 )
 
-func main()  {
+func main() {
 
 	page:=1
 	pagesize:=500
