@@ -6,6 +6,8 @@ require (
 	github.com/deckarep/golang-set v1.7.1 // indirect
 	github.com/gin-gonic/gin v1.5.0
 	github.com/go-redis/redis v6.15.7+incompatible
+	github.com/graphql-go/graphql v0.7.9
+	github.com/graphql-go/handler v0.2.3 // indirect
 	github.com/jinzhu/gorm v1.9.12
 	github.com/olivere/elastic v6.2.27+incompatible
 	github.com/olivere/elastic/v7 v7.0.11
