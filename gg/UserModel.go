@@ -15,6 +15,7 @@ func NewUserModel() *UserModel{
 }
 //映射实体  第一步:
 func NewUserModelGraphQL() *graphql.Object {
+
 	return graphql.NewObject(graphql.ObjectConfig{
     	Name:"UserModel",
     	Fields:graphql.Fields{
@@ -32,7 +33,6 @@ func NewUserModelQuery() *graphql.Object {
 				Args:graphql.FieldConfigArgument{"id":&graphql.ArgumentConfig{Type:graphql.Int}},
 				Resolve: func(p graphql.ResolveParams) (i interface{}, e error) {
 				     if id,ok:=p.Args["id"];ok{
-
 						 return NewUserService().GetUserById(id.(int))
 					 }else{
 					 	return nil,fmt.Errorf("id param error")

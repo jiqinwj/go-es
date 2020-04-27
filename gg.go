@@ -8,16 +8,15 @@ import (
 
 func main()  {
 
-	schema:=gg.NewUserQuerySchema()
+	schema:=gg.NewLogQuerySchema()
 	h:=handler.New(&handler.Config{
 		Schema:&schema,
 	})
-
    router:=gin.Default()
-   g:=router.Group("/users")
+   g:=router.Group("/logs")
    {
 		g.Handle("POST","/", func(context *gin.Context) {
-			h.ServeHTTP(context.Writer,context.Request)
+			 h.ServeHTTP(context.Writer,context.Request)
 		})
    }
    router.Run(":8086")
